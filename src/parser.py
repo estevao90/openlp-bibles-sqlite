@@ -1,47 +1,48 @@
-from bs4 import BeautifulSoup
+# pylint: disable=too-few-public-methods
 import json
 import re
-from utils import fazerRequisicao
+from bs4 import BeautifulSoup
+from utils import fazer_requisicao
 from sqlite import Sqlite
 
 
 class Parser:
 
-    def __init__(self, urlInicial, referenciaInicial):
-        self.__urlInicial = urlInicial
-        self.__referenciaAtual = referenciaInicial
-        self.__capituloAtual = None
-        self.__ultimoLivro = None
-        self.__numeroUltimoLivro = None
+    def __init__(self, url_inicial, referencia_inicial):
+        self.__url_inicial = url_inicial
+        self.__referencia_atual = referencia_inicial
+        self.__capitulo_atual = None
+        self.__ultimo_livro = None
+        self.__numero_ultimo_livro = None
 
-    def __getCapitulo(self):
-        pagina = fazerRequisicao(self.__urlInicial + self.__referenciaAtual)
+    def __get_capitulo(self):
+        pagina = fazer_requisicao(self.__url_inicial + self.__referencia_atual)
         return json.loads(pagina.content)
 
-    def __temProximo(self):
-        return self.__capituloAtual['next'] != None
+    def __tem_proximo(self):
+        return self.__capitulo_atual['next'] is not None
 
-    def __getProximaReferencia(self):
-        return self.__capituloAtual['next']['usfm'][0]
+    def __get_proxima_referencia(self):
+        return self.__capitulo_atual['next']['usfm'][0]
 
-    def __processarLivro(self, livro, baseSqlite):
-        if livro != self.__ultimoLivro:
-            self.__ultimoLivro = livro
-            self.__numeroUltimoLivro = baseSqlite.cadastrarLivro(livro)
+    def __processar_livro(self, livro, base_sqlite):
+        if livro != self.__ultimo_livro:
+            self.__ultimo_livro = livro
+            self.__numero_ultimo_livro = base_sqlite.cadastrarLivro(livro)
 
-    def __processarCapitulo(self, baseSqlite):
-        codigoCapitulo = self.__capituloAtual['reference']['usfm'][0]
-        capitulo = self.__capituloAtual['reference']['human']
+    def __processar_capitulo(self, base_sqlite):
+        codigo_capitulo = self.__capitulo_atual['reference']['usfm'][0]
+        capitulo = self.__capitulo_atual['reference']['human']
         print('Processando %s...' % (capitulo))
 
-        capituloVersiculo = capitulo.split()
-        self.__processarLivro(capituloVersiculo[0], baseSqlite)
-        textoHtml = BeautifulSoup(
-            self.__capituloAtual['content'], 'html.parser')
+        capitulo_versiculo = capitulo.split()
+        self.__processar_livro(capitulo_versiculo[0], base_sqlite)
+        texto_html = BeautifulSoup(
+            self.__capitulo_atual['content'], 'html.parser')
 
-        numeroVersiculo = 0
-        for versiculo in textoHtml.find_all(
-                'span', {'data-usfm': re.compile(codigoCapitulo + '.[0-9]*')}):
+        numero_versiculo = 0
+        for versiculo in texto_html.find_all(
+                'span', {'data-usfm': re.compile(codigo_capitulo + '.[0-9]*')}):
 
             texto = ''.join([s.get_text() for s in versiculo.find_all(
                 'span', {'class': 'content'})])
@@ -50,12 +51,12 @@ class Parser:
             if not texto.strip():
                 continue
 
-            numeroVersiculo += 1
-            baseSqlite.cadastrarVersiculo(
-                self.__numeroUltimoLivro, capituloVersiculo[1], numeroVersiculo, texto)
+            numero_versiculo += 1
+            base_sqlite.cadastrarVersiculo(
+                self.__numero_ultimo_livro, capitulo_versiculo[1], numero_versiculo, texto)
 
-    def gerarSqlite(self, caminhoSqlite, nome, copyright):
-        baseSqlite = Sqlite(caminhoSqlite, nome, copyright)
+    def gerar_sqlite(self, caminho_sqlite, nome, legal_terms):
+        base_sqlite = Sqlite(caminho_sqlite, nome, legal_terms)
 
         # cont = 0
 
@@ -65,9 +66,9 @@ class Parser:
             # if cont == 5:
             #     break
 
-            self.__capituloAtual = self.__getCapitulo()
-            self.__processarCapitulo(baseSqlite)
-            if self.__temProximo():
-                self.__referenciaAtual = self.__getProximaReferencia()
+            self.__capitulo_atual = self.__get_capitulo()
+            self.__processar_capitulo(base_sqlite)
+            if self.__tem_proximo():
+                self.__referencia_atual = self.__get_proxima_referencia()
             else:
                 break
