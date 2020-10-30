@@ -1,10 +1,14 @@
+from configparser import ConfigParser
 from parser import Parser
 
-CAMINHO_ARQ_SQLITE = 'ARC.sqlite'
-BIBLIA_NOME = 'Almeida Revista e Corrigida'
-BIBLIA_COPYRIGHT = 'ARC © 1995, 2009 Sociedade Bíblica do Brasil.'
-BIBLIA_URL_INICIAL = 'https://nodejs.bible.com/api/bible/chapter/3.1?id=212&reference='
-BIBLIA_REFERENCIA_INICIAL = 'REV.21'
+config = ConfigParser()
+config.read('config.ini')
+
+CAMINHO_ARQ_SQLITE = config['sqlite']['caminho']
+BIBLIA_NOME = config['biblia']['nome']
+BIBLIA_COPYRIGHT = config['biblia']['copyright']
+BIBLIA_URL_INICIAL = config['biblia']['url_inicial']
+BIBLIA_REFERENCIA_INICIAL = config['biblia']['referencia_inicial']
 
 if __name__ == '__main__':
     print('Início do processamento.')
