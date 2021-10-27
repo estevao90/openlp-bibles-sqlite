@@ -6,7 +6,7 @@ from utils import fazer_requisicao
 from sqlite import Sqlite
 
 
-class Parser:
+class SiteParser:
 
     def __init__(self, url_inicial, referencia_inicial):
         self.__url_inicial = url_inicial
@@ -28,7 +28,7 @@ class Parser:
     def __processar_livro(self, livro, base_sqlite):
         if livro != self.__ultimo_livro:
             self.__ultimo_livro = livro
-            self.__numero_ultimo_livro = base_sqlite.cadastrarLivro(livro)
+            self.__numero_ultimo_livro = base_sqlite.cadastrar_livro(livro)
 
     def __processar_capitulo(self, base_sqlite):
         codigo_capitulo = self.__capitulo_atual['reference']['usfm'][0]
@@ -52,20 +52,13 @@ class Parser:
                 continue
 
             numero_versiculo += 1
-            base_sqlite.cadastrarVersiculo(
+            base_sqlite.cadastrar_versiculo(
                 self.__numero_ultimo_livro, capitulo_versiculo[1], numero_versiculo, texto)
 
     def gerar_sqlite(self, caminho_sqlite, nome, legal_terms):
         base_sqlite = Sqlite(caminho_sqlite, nome, legal_terms)
 
-        # cont = 0
-
         while True:
-
-            # cont += 1
-            # if cont == 5:
-            #     break
-
             self.__capitulo_atual = self.__get_capitulo()
             self.__processar_capitulo(base_sqlite)
             if self.__tem_proximo():
