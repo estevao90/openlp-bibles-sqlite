@@ -13,7 +13,8 @@ class ParserErro(Exception):
 
 def fazer_requisicao(url):
     try:
-        conteudo = requests.get(url, timeout=30)
+        headers = {'User-Agent': 'Python bot'}
+        conteudo = requests.get(url, headers=headers, timeout=30)
         conteudo.raise_for_status()
         return conteudo
     except Exception as err:
