@@ -1,5 +1,5 @@
 from configparser import ConfigParser
-from parser import Parser
+from argparse import ArgumentParser
 
 config = ConfigParser()
 config.read('config.ini')
@@ -12,6 +12,6 @@ BIBLIA_REFERENCIA_INICIAL = config['biblia']['referencia_inicial']
 
 if __name__ == '__main__':
     print('Início do processamento.')
-    parser = Parser(BIBLIA_URL_INICIAL, BIBLIA_REFERENCIA_INICIAL)
+    parser = ArgumentParser(BIBLIA_URL_INICIAL, BIBLIA_REFERENCIA_INICIAL)
     parser.gerar_sqlite(CAMINHO_ARQ_SQLITE, BIBLIA_NOME, BIBLIA_COPYRIGHT)
     print('Fim do processamento.')

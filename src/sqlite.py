@@ -22,7 +22,7 @@ class Sqlite():
 
             self.__gerar_schema_padrao()
         except Exception as err:
-            raise ParserErro(str(err).encode('utf-8'), 'no sqlite')
+            raise ParserErro(str(err).encode('utf-8'), 'no sqlite') from err
 
     def __criar_tabela_metadata(self, cursor):
         cursor.execute(
@@ -108,10 +108,10 @@ class Sqlite():
                       else self.__CODIGO_NOVO_TESTAMENTO)
         indice_livro = self.__indice_livro_atual
 
-        cursor.execute('''
+        cursor.execute(f'''
             INSERT INTO book (book_reference_id, testament_reference_id, name)
-            values (%s, %s, '%s')
-            ''' % (indice_livro, testamento, livro))
+            values ({indice_livro}, {testamento}, '{livro}')
+            ''')
 
         conexao.commit()
         conexao.close()
@@ -123,10 +123,10 @@ class Sqlite():
         conexao = self.__get_conexao()
         cursor = conexao.cursor()
 
-        cursor.execute('''
+        cursor.execute(f'''
             INSERT INTO verse (book_id, chapter, verse, text)
-            values (%s, %s, %s, '%s')
-            ''' % (num_livro, num_capitulo, num_versiculo, texto))
+            values ({num_livro}, {num_capitulo}, {num_versiculo}, '{texto}')
+            ''')
 
         conexao.commit()
         conexao.close()

@@ -33,7 +33,7 @@ class Parser:
     def __processar_capitulo(self, base_sqlite):
         codigo_capitulo = self.__capitulo_atual['reference']['usfm'][0]
         capitulo = self.__capitulo_atual['reference']['human']
-        print('Processando %s...' % (capitulo))
+        print(f'Processando {capitulo}...')
 
         capitulo_versiculo = capitulo.split()
         self.__processar_livro(capitulo_versiculo[0], base_sqlite)
