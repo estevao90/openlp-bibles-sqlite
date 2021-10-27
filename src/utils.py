@@ -17,4 +17,4 @@ def fazer_requisicao(url):
         conteudo.raise_for_status()
         return conteudo
     except Exception as err:
-        raise ParserErro(str(err).encode('utf-8'), 'de conexão')
+        raise ParserErro(str(err).encode('utf-8'), 'de conexão') from err

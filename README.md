@@ -5,18 +5,15 @@ Web Scraping from bible.com to generate sqlite files to OpenLP software.
 ## Development
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-[![Actions Status](https://github.com/estevao90/openlp-bibles-sqlite/workflows/Tests/badge.svg)](https://github.com/estevao90/openlp-bibles-sqlite/actions?query=workflow%3ATests+branch%3Amaster+)
+[![Integration](https://github.com/estevao90/openlp-bibles-sqlite/actions/workflows/integration.yml/badge.svg)](https://github.com/estevao90/openlp-bibles-sqlite/actions/workflows/integration.yml)
 
 ## Dependencies
 
 ```shell
-# install pipenv globally
-sudo pip install pipenv -U
-
-# create project virtualenv
+# create virtualenv
 pipenv install --dev
 
-# active virtualenv
+# run shell
 pipenv shell
 ```
 
