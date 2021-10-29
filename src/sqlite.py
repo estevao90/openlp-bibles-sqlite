@@ -124,7 +124,8 @@ class Sqlite():
         cursor = conexao.cursor()
 
         cursor.execute(
-            f'select text from verse where book_id = ? and chapter = ? and verse = ?', (num_livro, num_capitulo, num_versiculo))
+            'select text from verse where book_id = ? and chapter = ? and verse = ?',
+            (num_livro, num_capitulo, num_versiculo))
         resultado = cursor.fetchone()
         if resultado is not None:
             texto = resultado[0] + ' ' + texto
