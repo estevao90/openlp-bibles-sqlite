@@ -108,10 +108,10 @@ class Sqlite():
                       else self.__CODIGO_NOVO_TESTAMENTO)
         indice_livro = self.__indice_livro_atual
 
-        cursor.execute(f'''
+        cursor.execute('''
             INSERT INTO book (book_reference_id, testament_reference_id, name)
-            values ({indice_livro}, {testamento}, '{livro}')
-            ''')
+            values (?, ?, ?)
+            ''', (indice_livro, testamento, livro))
 
         conexao.commit()
         conexao.close()
@@ -123,10 +123,17 @@ class Sqlite():
         conexao = self.__get_conexao()
         cursor = conexao.cursor()
 
-        cursor.execute(f'''
+        cursor.execute(
+            'select text from verse where book_id = ? and chapter = ? and verse = ?',
+            (num_livro, num_capitulo, num_versiculo))
+        resultado = cursor.fetchone()
+        if resultado is not None:
+            texto = resultado[0] + ' ' + texto
+
+        cursor.execute('''
             INSERT INTO verse (book_id, chapter, verse, text)
-            values ({num_livro}, {num_capitulo}, {num_versiculo}, '{texto}')
-            ''')
+            values (?, ?, ?, ?)
+            ''', (num_livro, num_capitulo, num_versiculo, texto))
 
         conexao.commit()
         conexao.close()

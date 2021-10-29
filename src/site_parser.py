@@ -40,9 +40,9 @@ class SiteParser:
         texto_html = BeautifulSoup(
             self.__capitulo_atual['content'], 'html.parser')
 
-        numero_versiculo = 0
         for versiculo in texto_html.find_all(
                 'span', {'data-usfm': re.compile(codigo_capitulo + '.[0-9]*')}):
+            numero_versiculo = versiculo.attrs['class'][1]
 
             texto = ''.join([s.get_text() for s in versiculo.find_all(
                 'span', {'class': 'content'})])
@@ -51,7 +51,6 @@ class SiteParser:
             if not texto.strip():
                 continue
 
-            numero_versiculo += 1
             base_sqlite.cadastrar_versiculo(
                 self.__numero_ultimo_livro, capitulo_versiculo[1], numero_versiculo, texto)
 
