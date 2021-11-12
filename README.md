@@ -14,7 +14,7 @@ pipenv install
 # edit configurations in config.ini file
 
 # run script
-pipenv run python src/app.py 
+pipenv run python src/app.py
 ```
 
 ## Development
