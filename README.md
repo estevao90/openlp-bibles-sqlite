@@ -33,5 +33,5 @@ pipenv shell
 
 ```shell
 # lint
-pylint --load-plugins pylint_quotes src/*
+pipenv run pylint --load-plugins pylint_quotes src/*
 ```
