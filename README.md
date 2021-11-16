@@ -14,7 +14,7 @@ pipenv install
 # edit configurations in config.ini file
 
 # run script
-pipenv run python src/app.py 
+pipenv run python src/app.py
 ```
 
 ## Development
@@ -33,5 +33,5 @@ pipenv shell
 
 ```shell
 # lint
-pylint --load-plugins pylint_quotes src/*
+pipenv run pylint --load-plugins pylint_quotes src/*
 ```

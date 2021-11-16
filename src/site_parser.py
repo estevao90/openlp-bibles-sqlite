@@ -40,9 +40,11 @@ class SiteParser:
         texto_html = BeautifulSoup(
             self.__capitulo_atual['content'], 'html.parser')
 
+        re_numero_ver = re.compile(r'\d+')
         for versiculo in texto_html.find_all(
                 'span', {'data-usfm': re.compile(codigo_capitulo + '.[0-9]*')}):
-            numero_versiculo = versiculo.attrs['class'][1]
+            numero_versiculo = int(re_numero_ver.findall(
+                versiculo.attrs['class'][1])[0])
 
             texto = ''.join([s.get_text() for s in versiculo.find_all(
                 'span', {'class': 'content'})])

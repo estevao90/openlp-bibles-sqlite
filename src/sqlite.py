@@ -127,13 +127,24 @@ class Sqlite():
             'select text from verse where book_id = ? and chapter = ? and verse = ?',
             (num_livro, num_capitulo, num_versiculo))
         resultado = cursor.fetchone()
+
         if resultado is not None:
             texto = resultado[0] + ' ' + texto
+            self.__update_versiculo(
+                cursor, num_livro, num_capitulo, num_versiculo, texto)
+        else:
+            self.__insert_versiculo(
+                cursor, num_livro, num_capitulo, num_versiculo, texto)
 
+        conexao.commit()
+        conexao.close()
+
+    def __insert_versiculo(self, cursor, num_livro, num_capitulo, num_versiculo, texto):
         cursor.execute('''
             INSERT INTO verse (book_id, chapter, verse, text)
             values (?, ?, ?, ?)
             ''', (num_livro, num_capitulo, num_versiculo, texto))
 
-        conexao.commit()
-        conexao.close()
+    def __update_versiculo(self, cursor, num_livro, num_capitulo, num_versiculo, texto):
+        cursor.execute('UPDATE verse SET text = ? WHERE book_id = ? AND chapter = ? AND verse = ?',
+                       (texto, num_livro, num_capitulo, num_versiculo))
