@@ -4,3 +4,5 @@ disable=
   C0115, # missing-class-docstring
   C0116, # missing-function-docstring
   R0913, # too-many-arguments
+
+string-quote=single-avoid-escape

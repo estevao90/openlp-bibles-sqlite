@@ -7,7 +7,7 @@ config.read('config.ini')
 CAMINHO_ARQ_SQLITE = config['sqlite']['path']
 BIBLIA_NOME = config['bible']['name']
 BIBLIA_COPYRIGHT = config['bible']['copyright']
-BIBLIA_URL_INICIAL = f"https://nodejs.bible.com/api/bible/chapter/3.1?id={config['bible']['id']}&reference="
+BIBLIA_URL_INICIAL = f"https://nodejs.bible.com/api/bible/chapter/3.1?id={config['bible']['id']}&reference="  # pylint: disable=line-too-long
 BIBLIA_REFERENCIA_INICIAL = config['bible']['initial_ref']
 
 if __name__ == '__main__':
