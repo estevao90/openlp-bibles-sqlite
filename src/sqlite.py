@@ -1,4 +1,3 @@
-# pylint: disable=no-self-use
 import sqlite3
 import os
 from utils import ParserErro

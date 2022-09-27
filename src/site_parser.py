@@ -36,7 +36,7 @@ class SiteParser:
         print(f'Processando {capitulo}...')
 
         capitulo_versiculo = capitulo.split()
-        self.__processar_livro(capitulo_versiculo[0], base_sqlite)
+        self.__processar_livro(' '.join(capitulo_versiculo[:-1]), base_sqlite)
         texto_html = BeautifulSoup(
             self.__capitulo_atual['content'], 'html.parser')
 
@@ -54,7 +54,7 @@ class SiteParser:
                 continue
 
             base_sqlite.cadastrar_versiculo(
-                self.__numero_ultimo_livro, capitulo_versiculo[1], numero_versiculo, texto)
+                self.__numero_ultimo_livro, capitulo_versiculo[-1], numero_versiculo, texto)
 
     def gerar_sqlite(self, caminho_sqlite, nome, legal_terms):
         base_sqlite = Sqlite(caminho_sqlite, nome, legal_terms)
