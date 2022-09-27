@@ -4,11 +4,11 @@ from site_parser import SiteParser
 config = ConfigParser()
 config.read('config.ini')
 
-CAMINHO_ARQ_SQLITE = config['sqlite']['caminho']
-BIBLIA_NOME = config['biblia']['nome']
-BIBLIA_COPYRIGHT = config['biblia']['copyright']
-BIBLIA_URL_INICIAL = config['biblia']['url_inicial']
-BIBLIA_REFERENCIA_INICIAL = config['biblia']['referencia_inicial']
+CAMINHO_ARQ_SQLITE = config['sqlite']['path']
+BIBLIA_NOME = config['bible']['name']
+BIBLIA_COPYRIGHT = config['bible']['copyright']
+BIBLIA_URL_INICIAL = f"https://nodejs.bible.com/api/bible/chapter/3.1?id={config['bible']['id']}&reference="
+BIBLIA_REFERENCIA_INICIAL = config['bible']['initial_ref']
 
 if __name__ == '__main__':
     print('Início do processamento.')
